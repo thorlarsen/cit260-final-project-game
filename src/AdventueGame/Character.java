@@ -36,7 +36,9 @@ public abstract class Character {
     }
 
     public void attack(int getAttackPoints) {
-
+        /*attack the opponent
+        get he opponents hitpoints and subtract this.attack points from it.
+         */
     }
 
 }

@@ -4,7 +4,7 @@ public class Player extends Character {
     private String race;
 
     public Player(){
-
+        /*default
     }
 
     public Player(int hitPoints, int attackPoints, String race) {
