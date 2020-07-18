@@ -23,7 +23,8 @@ public abstract class Character {
     }
 
     public int getHitPoints() {
-
+        /* return character's hitpoints
+         */
     }
 
     public void setHitPoints(int hitPoints) {
