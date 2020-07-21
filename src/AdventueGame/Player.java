@@ -1,6 +1,7 @@
-package FinalProject;
+package AdventueGame;
 
 public class Player extends Character {
+
     private String race;
 
     public Player(){
@@ -8,8 +9,8 @@ public class Player extends Character {
         this(0,0,"human");
     }
     public Player(int hitPoints, int attackPoints, String race) {
-         this.hitPoints = hitPoints;
-         this.attackPoints = attackPoints;
+         this.setHitPoints(hitPoints);
+         this.setAttackPoints(attackPoints);
          this.race = race;
 
     }

@@ -1,19 +1,20 @@
-package FinalProject;
+package AdventueGame;
 
-public class NonPlayerCharacter extends Character {
+
+public class NonPlayer extends Character {
 
     private Boolean helper;
-    private Boolean defeated = false;
+    private Boolean defeated;
 
         //default no parameter constructor
-       public NonPlayer() {
+    public NonPlayer() {
             this(0, 0, false);
         }
 
-        //default parameterized constructor
-       public NonPlayerCharacter( int hitPoints, int attackPoints ,boolean helper){
-            this.hitPoints = hitPoints;
-            this.attackPoints = attackPoints;
+        //parameterized constructor
+       public NonPlayer(int hitPoints, int attackPoints, boolean helper){
+            this.setHitPoints(hitPoints);
+            this.setAttackPoints(attackPoints);
             this.helper = helper;
         }
 
@@ -26,8 +27,8 @@ public class NonPlayerCharacter extends Character {
 
         //change value of defeated from false to true
         public boolean setDefeated () {
-            if (helper == false) {
-                return defeated = true;
+            if (!helper) {
+                this.defeated = true;
             }
         }
 

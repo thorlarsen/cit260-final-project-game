@@ -1,18 +1,27 @@
 package AdventueGame;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
 public class AdventureGame {
 
-    public static void main(String[] args){
-        /* Order of play
-         * gameDescription()
-         * start new game or load saved game
-         * if new
-         *      gameInitialize()
-         * else
-         *      read saveFile
-         *      pass values from save file to gameInitialize()
-         *
-         * while !gameOver
+    public static void main(String[] args) {
+        gameDescription();
+        boolean newGame = true;
+
+        // start new game or load saved game
+        if (newGame) {
+            Player player = new Player();
+            gameInitialize(player);
+            ArrayList<Character> nonPlayers = new ArrayList<>();
+            mapInitialize(nonPlayers);
+        } else {
+            gameRestore();
+        }
+
+        boolean gameOver = false;
+         /* while !gameOver
          * prompt player to move(f or b), (s)ave, or e(x)it
          *      ++First turn player can only go forward or save
          *
@@ -20,7 +29,7 @@ public class AdventureGame {
          *          saveGame()
          *          resume game
          *
-         *
+        /*
          *      if player response == x
          *          exitGame()
          *
@@ -87,22 +96,46 @@ public class AdventureGame {
          */
     }
 
-    public static int random(int howManyNumbers){
 
-    }
-
-    public static void gameDescription(){
+    public static void gameDescription() {
         /* This method will print the game description and instructions.
          * The goal of the game is to face challenges and work toward
          * the goal of freeing the dragon from capitivity. The player
          * will receive hints from helpers
          */
+        System.out.println("This will be the game description.");
     }
 
-    public static void gameInitialize() {
+    public static void gameInitialize(Player player) {
         /* This method will initialize the game
-         * create caveRooms int[8]
-         * create npCharacters array list of all the non player characters.
+         */
+
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("What is your name?");
+        player.setName(input.nextLine());
+        System.out.println("What race will you be? human, dwarf, or elf? ");
+        String race = input.nextLine();
+        if (race.equals("human")) {
+            player.setHitPoints(30);
+            player.setAttackPoints(10);
+        } else if (race.equals("dwarf")) {
+            player.setHitPoints(35);
+            player.setAttackPoints(15);
+        } else if (race.equals("elf")) {
+            player.setHitPoints(35);
+            player.setAttackPoints(12);
+        }
+        input.close();
+        player.setRoomNumber(0);
+    }
+
+    //setup the game map
+    public static void mapInitialize(ArrayList<Character> nonPlayers) {
+        int[] caveRooms = {0, 1, 2, 3, 4, 5, 6, 7};
+
+
+        /* create npCharacters array list of all the non player characters.
          *  wizard = list member 1
          *  nymph = list member 4
          *  dragon = list member 7
@@ -111,6 +144,61 @@ public class AdventureGame {
          * outside cave = room[0]
          * set player.position(0)
          */
+
+
+        int hitPoints = 0, attackPoints = 0;
+        String name;
+        boolean helper = false;
+        for (int i = 1; i <= 7; i++) {
+            switch (i) {
+                case 1:
+                    name = "Wizard";
+                    hitPoints = 100;
+                    attackPoints = 0;
+                    helper = true;
+                    break;
+                case 2:
+                    name = "Thief";
+                    hitPoints = 25;
+                    attackPoints = 7;
+                    break;
+                case 3:
+                    name = "Giant Snake";
+                    hitPoints = 20;
+                    attackPoints = 5;
+                    break;
+                case 4:
+                    name = "Nymph";
+                    hitPoints = 100;
+                    attackPoints = 0;
+                    helper = true;
+                    break;
+                case 5:
+                    name = "Wolf";
+                    hitPoints = 20;
+                    attackPoints = 5;
+                    break;
+                case 6:
+                    name = "Troll";
+                    hitPoints = 40;
+                    attackPoints = 12;
+                    break;
+                case 7:
+                    name = "Dragon";
+                    hitPoints = 100;
+                    attackPoints = 0;
+                    helper = true;
+                    break;
+            }
+            nonPlayers.add(new NonPlayer(hitPoints, attackPoints, helper));
+            nonPlayers.get(i - 1).setName(name);
+            nonPlayers.get(i - 1).setRoomNumber(i);
+            helper = false;
+
+        }
+        return nonPlayers;
+    }
+
     }
 
     public static void gameSave() {
@@ -123,5 +211,12 @@ public class AdventureGame {
         /*This will read in the text from the save file and
          * it will initialize the game instead of gameInitialize.
          */
+    }
+
+    public static int random(int howManyNumbers){
+
+        Random randomGenerator=new Random();
+        System.out.println(randomGenerator.nextInt(howManyNumbers) + 1);
+
     }
 }

@@ -1,6 +1,6 @@
 package AdventueGame;
 
-public abstract class Character {
+public class Character {
 
     private int hitPoints;
     private int attackPoints;
