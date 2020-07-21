@@ -26,7 +26,7 @@ public class NonPlayer extends Character {
         }
 
         //change value of defeated from false to true
-        public boolean setDefeated () {
+        public void setDefeated () {
             if (!helper) {
                 this.defeated = true;
             }
