@@ -48,7 +48,7 @@ public class Player extends Character {
 
     @Override
     public String toString( ) {
-        return super.toString() + "\n" + this.getRace() + "\n" + this.getOriginalHitPoints();
+        return super.toString() + "\n" + this.getRace() + "\n" + this.getOriginalHitPoints() + "\n";
     }
 }
 

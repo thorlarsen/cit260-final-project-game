@@ -1,10 +1,15 @@
 package AdventueGame;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
+
+    public static final String DATAFILE = "data.txt";
 
     public static void main(String[] args) {
         gameDescription();
@@ -18,9 +23,9 @@ public class Game {
 
         // start new game and initialize the player and non players
         if (decision == 'n') {
-            Player player1 = new Player();
             System.out.print("What is your name?");
-            String player1Name = keyboard.nextLine();
+            String player1Name = keyboard.next();
+            Player player1 = new Player();
             player1.setName(player1Name);
             System.out.println("\nNext choose your race. Humans have fewer hitpoints than the others, ");
             System.out.println("but they have the strongest attack. Dwarves have more hitpoints than ");
@@ -121,7 +126,18 @@ public class Game {
                             player1.move(-1);
                             break;
                         case 's':
-                            gameSave();
+                            try {
+                                String saveData = player1.toString();
+                                for (NonPlayer nonPC : nPC) {
+                                    saveData = saveData + nonPC.toString();
+                                }
+                                gameSave(saveData);
+                                System.out.println("Game saved to " + DATAFILE + ".");
+                            }
+                            catch (IOException ex) {
+                                System.out.println("Exception: There was a problem saving the game.");
+                                System.out.println("Game was not saved.");
+                            }
                             motion = false;
                             break;
                         case 'x':
@@ -216,11 +232,14 @@ public class Game {
         }
 
 
-        public static void gameSave () {
+        public static void gameSave (String saveData) throws IOException {
             /* This will create a text file that will contain
              * text representation of the game's current state.
              */
-            System.out.println("Save game placeholder.");
+            File file = new File(DATAFILE);
+            PrintWriter outputToFile = new PrintWriter(file);
+            outputToFile.println(saveData);
+            outputToFile.close();
         }
 
         public static void gameRestore () {
@@ -235,10 +254,6 @@ public class Game {
             Random randomNum = new Random();
             return randomNum.nextInt(howManyNumbers) + 1;
 
-        }
-
-        public static void fight () {
-            System.out.println("Fight method");
         }
 
         public static void roomDescription ( int roomNumber, String npName, boolean isDefeated ) {

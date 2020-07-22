@@ -36,7 +36,7 @@ public class NonPlayer extends Character {
 
     @Override
     public String toString( ) {
-        return super.toString() + "\n" + this.isHelper() + this.isDefeated();
+        return super.toString() + "\n" + this.isHelper() + "\n" + this.isDefeated() + "\n";
     }
 
     }
