@@ -12,26 +12,31 @@ public class NonPlayer extends Character {
         }
 
         //parameterized constructor
-       public NonPlayer(int hitPoints, int attackPoints, boolean helper){
+    public NonPlayer(int hitPoints, int attackPoints, boolean helper){
             this.setHitPoints(hitPoints);
             this.setAttackPoints(attackPoints);
             this.helper = helper;
-        }
+    }
 
-        //determines whether character is a helper or not
-        public boolean isHelper() {
-            //returns true or false.
-            // If helper = T, return T. else return F
-            return helper;
-        }
+     //determines whether character is a helper or not
+    public boolean isHelper() {
+        //returns true or false.
+        // If helper = T, return T. else return F
+        return helper;
+    }
 
-        //change value of defeated from false to true
-        public void setDefeated() {
-            if (!helper) {
-                this.defeated = true;
-            }
+    //change value of defeated from false to true
+    public void setDefeated() {
+        if (!helper) {
+            this.defeated = true;
         }
+    }
 
-        public boolean isDefeated() { return this.defeated; }
+    public boolean isDefeated() { return this.defeated; }
+
+    @Override
+    public String toString( ) {
+        return super.toString() + "\n" + this.isHelper() + this.isDefeated();
+    }
 
     }

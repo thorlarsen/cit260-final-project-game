@@ -2,11 +2,10 @@ package AdventueGame;
 
 public class Character {
 
+    private String name;
     private int hitPoints;
     private int attackPoints;
     private int roomNumber;
-    private String name;
-
 
     public Character(){
         /* default non-parameterized constructor
@@ -51,10 +50,8 @@ public class Character {
 
     public void setName(String name) { this.name = name; }
 
-    public void attack(int getAttackPoints) {
-        /*attack the opponent
-        get he opponents hitpoints and subtract this.attack points from it.
-         */
+    public String toString() {
+        return this.getName() + "\n" + this.getHitPoints() + "\n" + this.getAttackPoints() + "\n" + this.getRoomNumber();
     }
 
 }
