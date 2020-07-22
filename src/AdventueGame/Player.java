@@ -25,7 +25,8 @@ public class Player extends Character {
 
     public void setOriginalHitPoints(int hitPoints) {
         this.originalHitPoints = hitPoints;
-        super.setHitPoints(hitPoints);}
+        super.setHitPoints(hitPoints);
+    }
 
     public void setRace(String race) {
         this.race = race;

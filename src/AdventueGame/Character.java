@@ -39,7 +39,7 @@ public class Character {
 
     public String getName() { return this.name; }
 
-        public void setHitPoints(int hitPoints) {
+    public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
 

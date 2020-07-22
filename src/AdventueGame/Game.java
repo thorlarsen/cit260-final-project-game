@@ -29,7 +29,7 @@ public class Game {
                 player1.setAttackPoints(12);
             }
             player1.setRoomNumber(0);
-            ArrayList<Character> nonPlayers = new ArrayList<>();
+            ArrayList<NonPlayer> nPC = new ArrayList<>();
             //mapInitialize
             int hitPoints = 0, attackPoints = 0;
             String name;
@@ -81,15 +81,15 @@ public class Game {
                         helper = true;
                         break;
                 }
-                nonPlayers.add(new NonPlayer(hitPoints, attackPoints, helper));
-                nonPlayers.get(i).setName(name);
-                nonPlayers.get(i).setRoomNumber(i);
+                nPC.add(new NonPlayer(hitPoints, attackPoints, helper));
+                nPC.get(i).setName(name);
+                nPC.get(i).setRoomNumber(i);
                 helper = false;
             } /* else {
                 gameRestore();
             } */
 
-            roomDescription(0, nonPlayers.get(0).getName());
+            roomDescription(0, nPC.get(0).getName());
 
             do {
                 //Move character
@@ -119,14 +119,55 @@ public class Game {
                             break;
                     }
                 } while (!motion);
-                int newRoomNumber = player1.getRoomNumber();
-                roomDescription(player1.getRoomNumber(), nonPlayers.get(newRoomNumber).getName());
-                //Interact with non player
-                    // if helper then no fight - hint is part of the room description
-                        //reset hp
+                int roomNum = player1.getRoomNumber();
+                roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName());
 
-                   // if !helper then fight
+                //A helper will restore HP to the player, if the player needs it.
+                if(nPC.get(roomNum).isHelper() && player1.getHitPoints() < player1.getOriginalHitPoints()) {
+                    player1.setHitPoints(player1.getOriginalHitPoints());
+                    System.out.println("Your HP are restored to " + player1.getHitPoints());
+                } else {
+                    boolean fight = !nPC.get(roomNum).isHelper();
+                    while(fight && player1.getHitPoints() >= 0 && !nPC.get(roomNum).isDefeated()) {
+                        System.out.print("Do you want to (f)ight or (r)un? ");
+                        char decision = input.next().charAt(0);
+                        if(decision == 'r') {
+                            player1.move(-1);
+                            fight = false;
+                        } else {
+                            //player fight round
+                            System.out.println("You attack first.");
+                            System.out.println("The " + nPC.get(roomNum).getName() + " has " + nPC.get(roomNum).getHitPoints() + " HP.");
+                            if (RandomNum(20) == 20) {
+                                System.out.println("You get a knockout hit!!");
+                                nPC.get(roomNum).setDefeated();
+                                System.out.println("You defeated the " + nPC.get(roomNum).getName());
+                            } else {
+                                System.out.println("You hit and do " + player1.getAttackPoints() + " points of damage");
+                                nPC.get(roomNum).setHitPoints(nPC.get(roomNum).getHitPoints() - player1.getAttackPoints());
+                                if(nPC.get(roomNum).getHitPoints() <= 0) {
+                                    nPC.get(roomNum).setDefeated();
+                                    System.out.println("You defeated the " + nPC.get(roomNum).getName());
+                                }
+                            }
+                            //opponent fight round
+                            if(!nPC.get(roomNum).isDefeated()) {
+                                System.out.println("The " + nPC.get(roomNum).getName() + " attacks");
+                                if (RandomNum(3) == 3) {
+                                    System.out.println("and misses! No damage.");
+                                } else {
+                                    System.out.println("and does " + nPC.get(roomNum).getAttackPoints() + " points of damage.");
+                                    player1.setHitPoints(player1.getHitPoints() - nPC.get(roomNum).getAttackPoints());
+                                    if(player1.getHitPoints() <= 0) {
+                                        player1.move(-1);
+                                        System.out.println("You can no longer fight and you must retreat.");
+                                    }
+                                }
+                            }
+                        }
+                    }
 
+                }
 
             } while (true);
 
@@ -158,10 +199,10 @@ public class Game {
             System.out.println("Restore game placeholder.");
         }
 
-        public static int random ( int howManyNumbers){
+        public static int RandomNum( int howManyNumbers) {
 
-            Random randomNum = new Random(howManyNumbers);
-            return randomNum.nextInt();
+            Random randomNum = new Random();
+            return randomNum.nextInt(howManyNumbers) + 1;
 
         }
 
@@ -172,7 +213,7 @@ public class Game {
         public static void roomDescription ( int roomNumber, String npName ) {
             switch (roomNumber) {
                 case 1:
-                    System.out.println("You step into the cave. It feels damp and smells musty.");
+                    System.out.println("You step into the cave. The air is damp and smells musty.");
                     System.out.println("You see a " + npName + " in here.");
                     break;
                 case 2:
