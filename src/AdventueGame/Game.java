@@ -1,15 +1,13 @@
 package AdventueGame;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
 
-    public static final String DATAFILE = "data.txt";
+    public static final String DATAFILE = "saved-data.txt";
 
     public static void main(String[] args) {
         gameDescription();
@@ -120,26 +118,22 @@ public class Game {
                     decision = keyboard.next().charAt(0);
                     switch (decision) {
                         case 'f':
-                            player1.move(1);
+                            if(player1.getHitPoints() <= 0) {
+                                System.out.println("I'm sorry, you can only move toward an opponent until your HP ");
+                                System.out.println("is restored. You can only only move back to the Nymph or the Wizard.");
+                            } else
+                                player1.move(1);
                             break;
                         case 'b':
                             player1.move(-1);
                             break;
                         case 's':
-                            try {
-                                String saveData = player1.toString();
-                                for (NonPlayer nonPC : nPC) {
-                                    saveData = saveData + nonPC.toString();
-                                }
-                                gameSave(saveData);
-                                System.out.println("Game saved to " + DATAFILE + ".");
+
+                            try { gameSave(player1, DATAFILE); }
+                            catch(IOException ex) {
+                                System.out.println("Could not write file.");
                             }
-                            catch (IOException ex) {
-                                System.out.println("Exception: There was a problem saving the game.");
-                                System.out.println("Game was not saved.");
-                            }
-                            motion = false;
-                            break;
+
                         case 'x':
                             keyboard.close();
                             System.exit(0);
@@ -153,6 +147,10 @@ public class Game {
                 int roomNum = player1.getRoomNumber();
                 roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName(), nPC.get(roomNum).isDefeated());
 
+                if(roomNum == 7) {
+                    endGame(player1.getName());
+                    System.exit(0);
+                }
                 //A helper will restore HP to the player, if the player needs it.
                 if(nPC.get(roomNum).isHelper() && player1.getHitPoints() < player1.getOriginalHitPoints()) {
                     player1.setHitPoints(player1.getOriginalHitPoints());
@@ -169,7 +167,9 @@ public class Game {
                         }
                         if(decision == 'r') {
                             player1.move(-1);
+                            roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName(), nPC.get(roomNum).isDefeated());
                             fight = false;
+
                         } else {
                             //player fight round
                             System.out.println("You attack first.");
@@ -197,6 +197,7 @@ public class Game {
                                     if(player1.getHitPoints() <= 0) {
                                         player1.move(-1);
                                         System.out.println("You can no longer fight and you must retreat.");
+                                        roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName(), nPC.get(roomNum).isDefeated());
                                     }
                                 }
                             }
@@ -232,14 +233,24 @@ public class Game {
         }
 
 
-        public static void gameSave (String saveData) throws IOException {
+        public static void gameSave (Object serObj, String filepath) throws IOException {
             /* This will create a text file that will contain
              * text representation of the game's current state.
              */
-            File file = new File(DATAFILE);
+
+            FileOutputStream fileOut = new FileOutputStream(filepath);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(serObj);
+            objectOut.close();
+            /* }
+            catch(Exception ex) {
+                System.out.println("Object could not be written.");
+            }
+
+            /*File file = new File(DATAFILE);
             PrintWriter outputToFile = new PrintWriter(file);
             outputToFile.println(saveData);
-            outputToFile.close();
+            outputToFile.close(); */
         }
 
         public static void gameRestore () {
@@ -317,6 +328,28 @@ public class Game {
                     System.out.println("You stand in front of the cave. It is not inviting.");
                     break;
             }
+        }
+
+        public static void endGame(String name) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("The dragon is chained to the floor and walls of the cave.");
+            System.out.println("Do you remember the spell that will free the dragon?");
+            String spell = input.nextLine();
+            String correctSpell = "LIGHT ALWAYS DEFEATS DARKNESS";
+            while(!spell.equals(correctSpell)) {
+                System.out.println("That's not quite it. Try again. The dragon is getting anxious.");
+                spell = input.nextLine();
+            }
+            System.out.println("\nLight flashes and thunder crashes!");
+            System.out.println("\nYou are back in front of your house. The dragon hovers above you. ");
+            System.out.println("A large chest is in front of you. Don't ask how. It's magic after all.");
+            System.out.println("The dragon speaks:");
+            System.out.println("Thank you, " + name + ", for freeing me from that cave. The treasure before you is from ");
+            System.out.println("my horde and should more than compensate you. But keep a watchful eye out. ");
+            System.out.println("You only stunned the power that held me; it has not gone away. I may ask ");
+            System.out.println("for you help again in the near future.");
+            System.out.println("\n---GAME OVER---");
+
         }
 
     }

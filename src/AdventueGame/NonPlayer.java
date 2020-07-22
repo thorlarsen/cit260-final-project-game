@@ -1,7 +1,11 @@
 package AdventueGame;
 
 
-public class NonPlayer extends Character {
+import java.io.Serializable;
+
+public class NonPlayer extends Character implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Boolean helper;
     private Boolean defeated = false;

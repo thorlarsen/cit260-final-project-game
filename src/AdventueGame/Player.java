@@ -1,6 +1,10 @@
 package AdventueGame;
 
-public class Player extends Character {
+import java.io.Serializable;
+
+public class Player extends Character implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String race;
     private int originalHitPoints;
