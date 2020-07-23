@@ -7,12 +7,12 @@ import java.util.Scanner;
 
 public class Game {
 
-    public static final String DATAFILE = "saved-data.txt";
+    public static final String DATAFILE = "saved-data.file";
 
     public static void main(String[] args) {
         gameDescription();
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("Are you starting a (n)ew game or (c)ontinuing a saved game?");
+        System.out.print("Are you starting a (n)ew game or (c)ontinuing a saved game? ");
         char decision = keyboard.next().charAt(0);
         while(decision != 'n' && decision != 'c') {
             System.out.println("Please type 'n' or 'c'.");
@@ -29,7 +29,7 @@ public class Game {
             System.out.println("but they have the strongest attack. Dwarves have more hitpoints than ");
             System.out.println("humans, but their attacks are weaker. Elves have the most hitpoints; ");
             System.out.println("their attack is stronger than dwarves but weaker than humans.");
-            System.out.println("\nWhat race will you be? (h)uman, (d)warf, or (e)lf? ");
+            System.out.print("\nWhat race will you be? (h)uman, (d)warf, or (e)lf? ");
             char race = keyboard.next().charAt(0);
             while(race != 'h' && race  != 'd' && race != 'e'){
                 System.out.println("Please enter 'h', 'd', or 'e'.");
@@ -47,7 +47,7 @@ public class Game {
                     break;
             }
             player1.setRoomNumber(0);
-            ArrayList<NonPlayer> nPC = new ArrayList<>();
+            ArrayList<Character> nPC = new ArrayList<>();
             //mapInitialize
             int hitPoints, attackPoints;
             String name;
@@ -107,13 +107,14 @@ public class Game {
                 gameRestore();
             } */
 
+            System.out.println("\nLet's begin!");
             roomDescription(0, nPC.get(0).getName(), true);
 
             do {
                 //Move character
                 boolean motion = true;
                 do {
-                    System.out.println("What would you like to do?");
+                    System.out.println("\nWhat would you like to do?");
                     System.out.print("move (f)orward, move (b)ackward, (s)ave game, or e(x)it: ");
                     decision = keyboard.next().charAt(0);
                     switch (decision) {
@@ -125,7 +126,10 @@ public class Game {
                                 player1.move(1);
                             break;
                         case 'b':
-                            player1.move(-1);
+                            if(player1.getRoomNumber() == 0)
+                                System.out.println("It took you hours to get here. Do you really want to go back?\n");
+                            else
+                                player1.move(-1);
                             break;
                         case 's':
 
@@ -149,6 +153,7 @@ public class Game {
 
                 if(roomNum == 7) {
                     endGame(player1.getName());
+                    keyboard.close();
                     System.exit(0);
                 }
                 //A helper will restore HP to the player, if the player needs it.
@@ -167,12 +172,13 @@ public class Game {
                         }
                         if(decision == 'r') {
                             player1.move(-1);
+                            roomNum = player1.getRoomNumber();
                             roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName(), nPC.get(roomNum).isDefeated());
                             fight = false;
 
                         } else {
                             //player fight round
-                            System.out.println("You attack first.");
+                            System.out.println("You attack.");
                             System.out.println("The " + nPC.get(roomNum).getName() + " has " + nPC.get(roomNum).getHitPoints() + " HP.");
                             if (RandomNum(20) == 20) {
                                 System.out.println("You get a knockout hit!!");
@@ -196,6 +202,7 @@ public class Game {
                                     player1.setHitPoints(player1.getHitPoints() - nPC.get(roomNum).getAttackPoints());
                                     if(player1.getHitPoints() <= 0) {
                                         player1.move(-1);
+                                        roomNum = player1.getRoomNumber();
                                         System.out.println("You can no longer fight and you must retreat.");
                                         roomDescription(player1.getRoomNumber(), nPC.get(roomNum).getName(), nPC.get(roomNum).isDefeated());
                                     }
@@ -219,16 +226,16 @@ public class Game {
      * will receive hints from helpers */
     public static void gameDescription () {
             System.out.println("Welcome to the Stupendous Cave Adventure!\n");
-            System.out.println("You have long heard rumors the something evil originating from a cave ");
-            System.out.println("nearby your home. It caused the disappearance of the ");
+            System.out.println("You have long heard rumors of something evil originating from a cave ");
+            System.out.println("a few hours walk from your home. It caused the disappearance of the ");
             System.out.println("last few remaining dragons not too long ago. ");
             System.out.println("\nNow an unreliable source is reporting that one last dragon is held ");
             System.out.println("prisoner in this cave, and it is promising wealth and power to anyone ");
             System.out.println("who is able to free it. That person need only challenge the ");
             System.out.println("creatures guarding the dragon. You have some experience with fighting so ");
             System.out.println("how bad can it be?");
-            System.out.println("\nYou take up your sword, a shield, a lantern and you decided to go on ");
-            System.out.println("this quest. A wizard and a cave nymph will aid you on your quest.");
+            System.out.println("\nYou take up your sword, a shield, a lantern and you decide to go. The ");
+            System.out.println("report also said a wizard and a cave nymph will aid you on your quest.");
             System.out.println("\nNow take courage and be on your way!");
         }
 
@@ -270,9 +277,9 @@ public class Game {
         public static void roomDescription ( int roomNumber, String npName, boolean isDefeated ) {
             switch (roomNumber) {
                 case 1:
-                    System.out.println("You step into the cave. The air is damp and smells musty.");
-                    System.out.println("You see a " + npName + " in here.");
-                    System.out.println("The " + npName + " speaks:");
+                    System.out.println("\nYou step into the cave. The air is damp and smells musty.");
+                    System.out.println("\nYou see a " + npName + " in here.");
+                    System.out.println("\nThe " + npName + " speaks:");
                     System.out.println("Take heed now! You will face the four beasts guarding the dragon.");
                     System.out.println("You must defeat each one in turn. If you are weary after fighting, ");
                     System.out.println("return to me and I will restore you. You will also meet the nymph of ");
@@ -280,49 +287,49 @@ public class Game {
                     System.out.println("Now, be off!");
                     break;
                 case 2:
-                    System.out.println("Stalactities and stalagmites make creepy shadows on the walls.");
+                    System.out.println("\nStalactities and stalagmites make creepy shadows on the walls.");
                     System.out.println("But what would you do without a lantern?");
                     if(!isDefeated)
-                        System.out.println("You see a " + npName + " in here.");
+                        System.out.println("\nYou see a " + npName + " in here.");
                     else
-                        System.out.println("You see an unconscious " + npName + " in here. Maybe it's dead?");
+                        System.out.println("\nYou see an unconscious " + npName + " in here. Maybe it's dead?");
                     break;
                 case 3:
-                    System.out.println("The temperature drops, but it is so humid in here you can't tell.");
+                    System.out.println("\nThe temperature drops, but it is so humid in here you can't tell.");
                     if(!isDefeated)
-                        System.out.println("You see a " + npName + " in here.");
+                        System.out.println("\nYou see a " + npName + " in here.");
                     else
-                        System.out.println("You see an unconscious " + npName + " in here. Maybe it's dead?");
+                        System.out.println("\nYou see an unconscious " + npName + " in here. Maybe it's dead?");
                     break;
                 case 4:
-                    System.out.println("There is a giant rock formation in here. It looks like a throne");
+                    System.out.println("\nThere is a giant rock formation in here. It looks like a throne");
                     System.out.println("A light appears on this throne and gets brighter. It has a human form.");
-                    System.out.println("You see a " + npName + " in here.");
+                    System.out.println("\nYou see a " + npName + " in here.");
                     System.out.println("The " + npName + " speaks:");
                     System.out.println("You are almost there. But the last two guards are the toughest.");
-                    System.out.println("After fighting them, you may return to me and I will restore you.");
+                    System.out.println("If you grow weary you may return to me and I will restore you.");
                     System.out.println("The dragon is bound with magic chains. When you see him, say this");
                     System.out.println("spell just like this:");
                     System.out.println("\nLIGHT ALWAYS DEFEATS DARKNESS");
                     System.out.println("\nGo now, and don't give in to fear.");
                     break;
                 case 5:
-                    System.out.println("Lots of nooks and crannies in this room. What's hiding in them?");
+                    System.out.println("\nLots of nooks and crannies in this room. What's hiding in them?");
                     if(!isDefeated)
-                        System.out.println("You see a " + npName + " in here.");
+                        System.out.println("\nYou see a " + npName + " in here.");
                     else
-                        System.out.println("You see an unconscious " + npName + " in here. Maybe it's dead?");
+                        System.out.println("\nYou see an unconscious " + npName + " in here. Maybe it's dead?");
                     break;
                 case 6:
-                    System.out.println("You are accosted by the worst BO you've ever smelled!");
+                    System.out.println("\nYou are accosted by the worst BO you've ever smelled!");
                     if(!isDefeated)
-                        System.out.println("You see a " + npName + " in here.");
+                        System.out.println("\nYou see a " + npName + " in here.");
                     else
-                        System.out.println("You see an unconscious " + npName + " in here. Maybe it's dead?");
+                        System.out.println("\nYou see an unconscious " + npName + " in here. Maybe it's dead?");
                     break;
                 case 7:
-                    System.out.println("There is a distinct smell of brimstone in here. Could this be it?");
-                    System.out.println("You see a " + npName + " in here.");
+                    System.out.println("\nThere is a distinct smell of brimstone in here. Could this be it?");
+                    System.out.println("\nYou see a " + npName + " in here.");
                     break;
                 default:
                     System.out.println("You stand in front of the cave. It is not inviting.");
@@ -349,6 +356,7 @@ public class Game {
             System.out.println("You only stunned the power that held me; it has not gone away. I may ask ");
             System.out.println("for you help again in the near future.");
             System.out.println("\n---GAME OVER---");
+            input.close();
 
         }
 

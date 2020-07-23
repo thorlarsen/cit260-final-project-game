@@ -52,7 +52,22 @@ public class Player extends Character implements Serializable {
 
     @Override
     public String toString( ) {
-        return super.toString() + "\n" + this.getRace() + "\n" + this.getOriginalHitPoints() + "\n";
+        return super.toString() + "\nrace: " + this.getRace() + "\noriginalHitPoints: " + this.getOriginalHitPoints() + "\n";
+    }
+
+    @Override
+    public boolean isHelper() {
+        return false;
+    }
+
+    @Override
+    public boolean isDefeated() {
+        return false;
+    }
+
+    @Override
+    public void setDefeated() {
+
     }
 }
 

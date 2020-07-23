@@ -1,6 +1,8 @@
 package AdventueGame;
 
-public class Character {
+import java.io.Serializable;
+
+public abstract class Character {
 
     private String name;
     private int hitPoints;
@@ -51,7 +53,12 @@ public class Character {
     public void setName(String name) { this.name = name; }
 
     public String toString() {
-        return this.getName() + "\n" + this.getHitPoints() + "\n" + this.getAttackPoints() + "\n" + this.getRoomNumber();
+        return "Name: " + this.getName() + "\nhitPoints: " + this.getHitPoints() + "\nattackPoints: " + this.getAttackPoints() + "\nroomNumber: " + this.getRoomNumber();
     }
 
+    public abstract boolean isHelper();
+
+    public abstract boolean isDefeated();
+
+    public abstract void setDefeated();
 }

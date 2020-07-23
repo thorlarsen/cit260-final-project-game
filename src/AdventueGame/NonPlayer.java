@@ -23,6 +23,7 @@ public class NonPlayer extends Character implements Serializable {
     }
 
      //determines whether character is a helper or not
+    @Override
     public boolean isHelper() {
         //returns true or false.
         // If helper = T, return T. else return F
@@ -30,17 +31,19 @@ public class NonPlayer extends Character implements Serializable {
     }
 
     //change value of defeated from false to true
+    @Override
     public void setDefeated() {
         if (!helper) {
             this.defeated = true;
         }
     }
 
+    @Override
     public boolean isDefeated() { return this.defeated; }
 
     @Override
     public String toString( ) {
-        return super.toString() + "\n" + this.isHelper() + "\n" + this.isDefeated() + "\n";
+        return super.toString() + "\nhelper: " + this.isHelper() + "\ndefeated: " + this.isDefeated() + "\n";
     }
 
-    }
+}
