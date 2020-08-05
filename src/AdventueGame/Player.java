@@ -55,6 +55,21 @@ public class Player extends Character {
         this.setRoomNumber(this.getRoomNumber() + newRoom);
     }
 
+    public void fight(NonPlayer opponent) {
+        if (GameMethods.RandomNum(20) == 20) {
+            System.out.println("You did a mortal blow!!");
+            opponent.setDefeated();
+            System.out.println("You defeated the " + opponent.getName());
+        } else {
+            System.out.println("You hit and do " + this.getAttackPoints() + " points of damage");
+            opponent.setHitPoints(opponent.getHitPoints() - this.getAttackPoints());
+            if(opponent.getHitPoints() <= 0) {
+                opponent.setDefeated();
+                System.out.println("You defeated the " + opponent.getName());
+            }
+        }
+    }
+
     @Override
     public String toString( ) {
         return super.toString() + "\n" + this.getRace() + "\n" + this.getOriginalHitPoints();
