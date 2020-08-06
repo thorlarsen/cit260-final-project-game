@@ -20,8 +20,39 @@ public class GameMethods {
         System.out.println("\nNow take courage and be on your way!");
     }
 
+    public static void initNewPlayer (Player player1) {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("What is your name?");
+        String player1Name = keyboard.next();
+        player1.setName(player1Name);
+        System.out.println("\nNext choose your race. Humans have fewer hitpoints than the others, ");
+        System.out.println("but they have the strongest attack. Dwarves have more hitpoints than ");
+        System.out.println("humans, but their attacks are weaker. Elves have the most hitpoints; ");
+        System.out.println("their attack is stronger than dwarves but weaker than humans.");
+        System.out.print("\nWhat race will you be? (h)uman, (d)warf, or (e)lf? ");
+        char race = keyboard.next().charAt(0);
+        while (race != 'h' && race != 'd' && race != 'e') {
+            System.out.println("Please enter 'h', 'd', or 'e'.");
+            race = keyboard.next().charAt(0);
+        }
+        switch (race) {
+            case 'h':
+                player1.setRace("human");
+                break;
+            case 'd':
+                player1.setRace("dwarf");
+                break;
+            case 'e':
+                player1.setRace("elf");
+                break;
+        }
+        //This puts the player just at the cave entrance
+        player1.setRoomNumber(0);
+
+    }
+
     /**
-     * The RandomNum methos
+     * The RandomNum method
      * returns a random integer between 1 and howManyNumbers
      * @param howManyNumbers as int
      * @return randomly generated number as int
@@ -65,7 +96,7 @@ public class GameMethods {
             case 3:
                 System.out.println("\nThe temperature drops, but it is so humid in here you can't tell.");
                 if(!isDefeated)
-                    System.out.println("\nYou see a " + npName + " in here.");
+                    System.out.println("\nYou see an " + npName + " in here.");
                 else
                     System.out.println("\nYou see an unconscious " + npName + " in here. Maybe it's dead?");
                 break;

@@ -3,8 +3,6 @@ package AdventueGame;
 
 public class Player extends Character {
 
-    private static final long serialVersionUID = 1L;
-
     private String race;
     private int originalHitPoints;
 
@@ -40,7 +38,7 @@ public class Player extends Character {
     public void setRace(String race) {
         this.race = race;
         if(race.equals("human")) {
-            this.setOriginalHitPoints(25);
+            this.setOriginalHitPoints(30);
             this.setAttackPoints(18);
         } else if(race.equals("dwarf")) {
             this.setOriginalHitPoints(35);
@@ -55,9 +53,19 @@ public class Player extends Character {
         this.setRoomNumber(this.getRoomNumber() + newRoom);
     }
 
-    public void fight(NonPlayer opponent) {
+    /**
+     * The fight method
+     * Handles the fight between the player and non-player characters.
+     * @param opponent
+     */
+    @Override
+    public void fight(Character opponent) {
+        System.out.println("You attack.");
+        System.out.println("The " + opponent.getName() + " has " + opponent.getHitPoints() + " HP.");
+        // 5% chance of a mortal blow at the beginning of each fight turn.
+        // When that happens the opponent is instantly defeated.
         if (GameMethods.RandomNum(20) == 20) {
-            System.out.println("You did a mortal blow!!");
+            System.out.println("You dealt a mortal blow!!");
             opponent.setDefeated();
             System.out.println("You defeated the " + opponent.getName());
         } else {
@@ -68,6 +76,18 @@ public class Player extends Character {
                 System.out.println("You defeated the " + opponent.getName());
             }
         }
+    }
+
+    /**
+     * The retreat method
+     * doesn't work yet.
+     * @param opponent
+     */
+    public void retreat(Character opponent) {
+        this.move(-1);
+        //opponent.setRoomNumber(this.getRoomNumber() - 1);
+        System.out.println("You can no longer fight and you must retreat.");
+        GameMethods.roomDescription(this.getRoomNumber(), opponent.getName(), opponent.isDefeated());
     }
 
     @Override
@@ -87,6 +107,11 @@ public class Player extends Character {
 
     @Override
     public void setDefeated() {
+
+    }
+
+    @Override
+    public void fight(Player player) {
 
     }
 }

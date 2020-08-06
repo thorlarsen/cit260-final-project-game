@@ -3,8 +3,6 @@ package AdventueGame;
 
 public class NonPlayer extends Character {
 
-    private static final long serialVersionUID = 1L;
-
     private Boolean helper;
     private Boolean defeated = false;
 
@@ -18,6 +16,19 @@ public class NonPlayer extends Character {
             this.setHitPoints(hitPoints);
             this.setAttackPoints(attackPoints);
             this.helper = helper;
+    }
+
+    @Override
+    public void fight(Player player1) {
+
+        System.out.println("The " + this.getName() + " attacks");
+        // Has a 1 in 3 chance of missing the player, and he'll do no damge if he misses.
+        if (GameMethods.RandomNum(3) == 3) {
+            System.out.println("and misses! No damage.");
+        } else {
+            System.out.println("and does " + this.getAttackPoints() + " points of damage.");
+            player1.setHitPoints(player1.getHitPoints() - this.getAttackPoints());
+        }
     }
 
      //determines whether character is a helper or not
@@ -42,6 +53,11 @@ public class NonPlayer extends Character {
     @Override
     public String toString( ) {
         return super.toString() + "\n" + this.isHelper() + "\n" + this.isDefeated();
+    }
+
+    @Override
+    public void fight(Character opponent) {
+
     }
 
 }

@@ -68,9 +68,15 @@ public abstract class Character {
         return this.getName() + "\n" + this.getHitPoints() + "\n" + this.getAttackPoints() + "\n" + this.getRoomNumber();
     }
 
+    public abstract void fight(Player player1);
+
+    public abstract void fight(Character opponent);
+
     public abstract boolean isHelper();
 
     public abstract boolean isDefeated();
 
     public abstract void setDefeated();
+
+
 }
