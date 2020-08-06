@@ -24,37 +24,8 @@ public class Game {
         Player player1 = new Player();
         ArrayList<Character> nPC = new ArrayList<>();
         if (decision == 'n') {
-            //Initialize a new game
+            //Initialize a new player
             GameMethods.initNewPlayer(player1);
-            /*
-            System.out.print("What is your name?");
-            String player1Name = keyboard.next();
-            player1.setName(player1Name);
-            System.out.println("\nNext choose your race. Humans have fewer hitpoints than the others, ");
-            System.out.println("but they have the strongest attack. Dwarves have more hitpoints than ");
-            System.out.println("humans, but their attacks are weaker. Elves have the most hitpoints; ");
-            System.out.println("their attack is stronger than dwarves but weaker than humans.");
-            System.out.print("\nWhat race will you be? (h)uman, (d)warf, or (e)lf? ");
-            char race = keyboard.next().charAt(0);
-            while (race != 'h' && race != 'd' && race != 'e') {
-                System.out.println("Please enter 'h', 'd', or 'e'.");
-                race = keyboard.next().charAt(0);
-            }
-            switch (race) {
-                case 'h':
-                    player1.setRace("human");
-                    break;
-                case 'd':
-                    player1.setRace("dwarf");
-                    break;
-                case 'e':
-                    player1.setRace("elf");
-                    break;
-            }
-            //This puts the player just at the cave entrance
-            player1.setRoomNumber(0);
-            */
-
 
             //Initialize the playing map
             int hitPoints, attackPoints;
